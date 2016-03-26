@@ -1,0 +1,19 @@
+{
+  "name": "nypl-dish-search",
+  "version": "1.0.0",
+  "description": "A simple web app for searching for dishes and the locations that serve them, using the NYPL API",
+  "main": "./server/index.js",
+  "dependencies": {
+    "bluebird": "^3.3.4",
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "lodash": "^4.6.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node ./server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Sakai (https://www.github.com/csakai)",
+  "license": "ISC"
+}
