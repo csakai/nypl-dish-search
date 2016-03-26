@@ -18,7 +18,7 @@ if (process.env.PORT) {
 
 if (!config.has('API_KEY') || config.get('API_KEY') === 'YOUR_API_KEY') {
     console.log('Please specify a real API_KEY. This can be easily accomplished by adding a new config file to the config folder,');
-    console.log('named something like "default-csakai.json", with an API_KEY specified.');
+    console.log('named "local.json", with an API_KEY specified.');
     process.exit(1);
 }
 
