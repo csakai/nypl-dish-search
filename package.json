@@ -8,12 +8,15 @@
     "body-parser": "^1.15.0",
     "config": "^1.19.0",
     "express": "^4.13.4",
-    "lodash": "^4.6.1"
+    "lodash": "^4.6.1",
+    "request": "^2.69.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "bower": "^1.7.7"
+  },
   "scripts": {
     "start": "node ./server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "author": "Chris Sakai (https://www.github.com/csakai)",
   "license": "ISC"
