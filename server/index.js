@@ -4,6 +4,7 @@
 var config = require('config'),
     express = require('express'),
     bodyParser = require('body-parser'),
+    path = require('path'),
     app = express(),
     port,
     routes;
@@ -30,11 +31,13 @@ app.get('/ping', function(req, res, next) {
     console.log(req.query);
     res.send('pong');
 });
-
-app.use("/", express.static("./client/"))
+app.use("/src", express.static(path.resolve(__dirname + "/../client/app/")));
+app.use("/bower_components", express.static(path.resolve(__dirname + "/../bower_components/")));
 
 app.use("/api", routes);
-
+app.get("/*", function (req, res) {
+    res.sendFile(path.resolve(__dirname + "/../client/index.html"));
+});
 app.listen(port, function() {
     console.log('************************');
     console.log('NYPL Dishes Search Server');
