@@ -6,7 +6,7 @@ router.get('/search', function(req, res, next) {
     dish.search(req.query)
         .then(function(payload) {
             console.log(payload);
-            res.json(200, payload);
+            res.status(200).json(payload);
         }).catch(next);
 });
 

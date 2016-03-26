@@ -1,15 +1,14 @@
-var Promise = require('bluebird');
+var config = require('config'),
+    Bluebird = require('bluebird'),
+    requestBuilder = require('../../util/request_builder');
 
 function DishCtrl() {
-    this.API_KEY = 'abc123';
-    // this.API_KEY = config.API_KEY;
+    this.API_KEY = config.get('API_KEY');
+    this.request = requestBuilder('dishes');
 }
 
 DishCtrl.prototype.search = function dishSearch(query) {
-    console.log('query', query);
-    return new Promise(function(resolve, reject) {
-        resolve("ok");
-    });
+    return this.request('search', query);
 };
 
 module.exports = DishCtrl;
