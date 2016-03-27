@@ -12,7 +12,11 @@
             dishesService.search(vm.dish)
                 .then(function(data) {
                     console.log('done');
-                    console.log(data);
+                    vm.count = data.count;
+                    vm.mostPopular = data.mostPopular;
+                    vm.oldest = data.oldest;
+                    vm.newest = data.newest;
+                    vm.dishes = data.list;
                 });
         }
     }

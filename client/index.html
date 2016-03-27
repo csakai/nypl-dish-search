@@ -6,7 +6,7 @@
         <!-- inject:css -->
         <!-- endinject -->
     </head>
-    <body ng-controller="searchCtrl as search">
+    <body ng-controller="searchCtrl as search" ng-cloak>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -19,15 +19,32 @@
                                 ng-model="search.dish"
                                 ng-required
                                 type="text" />
-                                {{search.dish}}
+                            <button type="submit">
+                                Search!
+                            </button>
+                            {{search.count}}
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="container" ng-if="search.dishes">
             <div class="row">
-                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <h1>Newest</h1>
+                    <dish dish="search.newest"></dish>
+                    <hr />
+                    <h1>Oldest</h1>
+                    <dish dish="search.oldest"></dish>
+                    <hr />
+                    <h1>Most Popular</h1>
+                    <dish dish="search.mostPopular"></dish>
+                    <hr />
+                    <dish
+                        ng-repeat="dish in search.dishes"
+                        dish="dish"></dish>
+                </div>
+            </div>
         </div>
 
         <!-- bower:js -->
@@ -40,6 +57,7 @@
         <!-- inject:js -->
         <script src="/src/app.js"></script>
         <script src="/src/dishes/dishes.service.js"></script>
+        <script src="/src/dishes/dish.directive.js"></script>
         <script src="/src/dishes/search.controller.js"></script>
         <!-- endinject -->
     </body>
