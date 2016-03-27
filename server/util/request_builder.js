@@ -11,13 +11,17 @@ var _ = require('lodash'),
         }
     };
 
-function handleLimiter() {
+function _decrementLimiter() {
     var limit = parseInt(process.env.request_limit);
     process.env.request_limit = --limit;
+}
+
+function _handleLimiter(response) {
     setTimeout(function() {
-        var limit1 = parseInt(process.env.request_limit);
-        process.env.request_limit = ++limit1;
+        var limit = parseInt(process.env.request_limit);
+        process.env.request_limit = ++limit;
     }, 1009);
+    return response;
 }
 
 function _checkLimit(reqString) {
@@ -25,7 +29,7 @@ function _checkLimit(reqString) {
         process.nextTick(function() {
             var limit = parseInt(process.env.request_limit);
             if (limit) {
-                handleLimiter();
+                _decrementLimiter();
                 resolve(reqString);
             } else {
                 setTimeout(function() {
@@ -46,9 +50,13 @@ function _prepRequest(path, endpoint, query) {
 
 function constructRequestFunction(path) {
     return function doRequestFlow(endpoint, query) {
+        if (!query) {
+            query = {};
+        }
         return _prepRequest(path, endpoint, query)
             .then(_checkLimit)
-            .then(requestPromise);
+            .then(requestPromise)
+            .then(_handleLimiter);
     };
 }
 

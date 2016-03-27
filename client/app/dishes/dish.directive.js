@@ -4,7 +4,8 @@
         return {
             restrict: 'E',
             scope: {
-                dish: '='
+                dish: '=',
+                getMenu: '&'
             },
             templateUrl: './src/dishes/dish.html'
         };

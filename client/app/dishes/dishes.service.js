@@ -9,8 +9,13 @@
                 path: 'search',
                 query: dish
             }).$promise;
-        }
+        };
 
+        this.menus = function(dishId) {
+            return resource.get({
+                path: dishId + '/menus'
+            }).$promise;
+        };
         return this;
     }
 })();

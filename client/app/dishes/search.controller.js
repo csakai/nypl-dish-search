@@ -18,6 +18,16 @@
                     vm.newest = data.newest;
                     vm.dishes = data.list;
                 });
+        };
+
+        vm.getMenu = function getMenuByDishId(id) {
+            console.log('called');
+            dishesService.menus(id)
+                .then(function(data) {
+                    console.log('menus fetched');
+                    vm.menus = data;
+                    console.log(vm.menus);
+                });
         }
     }
 })();

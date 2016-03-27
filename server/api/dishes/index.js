@@ -13,4 +13,13 @@ router.get('/search', function(req, res, next) {
         }).catch(next);
 });
 
+router.get('/:id/menus', function(req, res, next) {
+    var dish = new DishCtrl();
+    var id = req.params.id;
+    dish.menus(id)
+        .then(function(payload) {
+            res.status(200).json(payload);
+        }).catch(next);
+});
+
 module.exports = router;
