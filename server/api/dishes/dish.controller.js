@@ -6,6 +6,9 @@ function DishCtrl() {
     this.request = requestBuilder('dishes');
 }
 function parseBody(response) {
+    var now = new Date();
+    console.log(response.statusCode,
+        now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds() + ':' + now.getMilliseconds());
     return JSON.parse(response.body);
 }
 
@@ -23,13 +26,9 @@ DishCtrl.prototype.search = function dishSearch(query) {
                 getExtremes.call(self, query, 'date', true),
                 getExtremes.call(self, query, 'popularity'),
                 function(oldest, newest, popular) {
-                    // console.log('oldest', _.keys(oldest.dishes));
-                    // self.body.oldest = oldest.dishes[0];
-                    // self.body.newest = newest.dishes[0];
-                    console.log(oldest);
-                    console.log(newest);
-                    console.log(popular);
-                    // self.body.mostPopular = popular.dishes[0];
+                    self.body.oldest = oldest.dishes[0];
+                    self.body.newest = newest.dishes[0];
+                    self.body.mostPopular = popular.dishes[0];
                     return self.body;
                 });
         });

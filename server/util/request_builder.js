@@ -1,7 +1,12 @@
 var _ = require('lodash'),
-    Bluebird = require('bluebird'),
-    request = require('request')
-    requestPromise = Bluebird.promisify(request);
+    RateLimiter = require('request-rate-limiter'),
+    limiter = new RateLimiter({
+        rate: 10,
+        interval: 1,
+        backoffCode: 403,
+        backoffTime: 1,
+        maxWaitingTime: 5
+    }),
     url = require('url'),
     urlObj = {
         host: 'api.menus.nypl.org',
@@ -16,7 +21,10 @@ function makeRequestFunction(path) {
     return function(endpoint, query) {
         requestObj.pathname = [path, endpoint].join('/');
         _.merge(requestObj.query, query);
-        return requestPromise(url.format(requestObj));
+        return limiter.request({
+            url: url.format(requestObj),
+            method: 'get'
+        });
     };
 }
 
