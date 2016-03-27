@@ -17,6 +17,8 @@ if (process.env.PORT) {
     port = 8000;
 }
 
+process.env.request_limit = 2;
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(require('./util/error_handler'));

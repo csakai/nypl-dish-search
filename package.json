@@ -9,8 +9,7 @@
     "config": "^1.19.0",
     "express": "^4.13.4",
     "lodash": "^4.6.1",
-    "request": "^2.69.0",
-    "request-rate-limiter": "^0.3.1"
+    "request": "^2.69.0"
   },
   "devDependencies": {
     "bower": "^1.7.7",
