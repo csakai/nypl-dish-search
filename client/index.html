@@ -6,17 +6,41 @@
         <!-- inject:css -->
         <!-- endinject -->
     </head>
-    <body>
+    <body ng-controller="searchCtrl as search">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <form name="search.findDish"
+                        ng-submit="search.submit()">
+                        <div class="form-group">
+                            <label for="searchbox">Search dishes</label>
+                            <input class="form-control"
+                                id="searchbox"
+                                ng-model="search.dish"
+                                ng-required
+                                type="text" />
+                                {{search.dish}}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6"></div>
+        </div>
 
-    <!-- bower:js -->
-    <script src="/bower_components/angular/angular.js"></script>
-    <script src="/bower_components/jquery/dist/jquery.js"></script>
-    <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="/bower_components/lodash/lodash.js"></script>
-    <!-- endbower -->
-    <!-- inject:js -->
-    <script src="/src/app.js"></script>
-    <!-- endinject -->
+        <!-- bower:js -->
+        <script src="/bower_components/angular/angular.js"></script>
+        <script src="/bower_components/jquery/dist/jquery.js"></script>
+        <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="/bower_components/lodash/lodash.js"></script>
+        <script src="/bower_components/angular-resource/angular-resource.js"></script>
+        <!-- endbower -->
+        <!-- inject:js -->
+        <script src="/src/app.js"></script>
+        <script src="/src/dishes/dishes.service.js"></script>
+        <script src="/src/dishes/search.controller.js"></script>
+        <!-- endinject -->
     </body>
     </html>
