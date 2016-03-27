@@ -9,7 +9,11 @@ function parseBody(response) {
     var now = new Date();
     console.log(response.statusCode,
         now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds() + ':' + now.getMilliseconds());
-    return JSON.parse(response.body);
+    if (response.statusCode === 401) {
+        throw new Error("Please add a proper API_KEY to the server config!");
+    } else {
+        return JSON.parse(response.body);
+    }
 }
 
 DishCtrl.prototype.search = function dishSearch(query) {

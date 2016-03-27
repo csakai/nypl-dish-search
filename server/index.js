@@ -17,14 +17,9 @@ if (process.env.PORT) {
     port = 8000;
 }
 
-if (!config.has('API_KEY') || config.get('API_KEY') === 'YOUR_API_KEY') {
-    console.log('Please specify a real API_KEY. This can be easily accomplished by adding a new config file to the config folder,');
-    console.log('named "local.json", with an API_KEY specified.');
-    process.exit(1);
-}
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(require('./util/error_handler'));
 routes = require('./routes');
 
 app.get('/ping', function(req, res, next) {
