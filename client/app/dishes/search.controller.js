@@ -21,6 +21,10 @@
             vm.hideFeatured = !vm.hideFeatured;
         };
 
+        function _setPaginationAllowed() {
+            vm.prevAllowed = !(vm.page <= 1);
+            vm.nextAllowed = !(vm.page >= (vm.count/10)-1);
+        }
         vm.submit = function submit() {
             if (!vm.findDish.$valid) {
                 console.log('not valid');
@@ -33,6 +37,7 @@
                 .then(function(data) {
                     console.log('done');
                     vm.count = data.count;
+                    _setPaginationAllowed();
                     vm.mostPopular = data.mostPopular;
                     vm.oldest = data.oldest;
                     vm.newest = data.newest;
@@ -49,9 +54,10 @@
             params.page = next
              ? ++vm.page
              : --vm.page;
-             vm.loadingDishes = true;
+            vm.loadingDishes = true;
             dishesService.search(params)
                 .then(function(data) {
+                    _setPaginationAllowed();
                     vm.dishes = data.list;
                     vm.loadingDishes = false;
             }).catch(_errorHandler);

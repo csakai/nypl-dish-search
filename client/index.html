@@ -56,15 +56,14 @@
                     <h1>Results for "{{search.searchStr}}"
                         <small>{{search.count}} results</small>
                     </h1>
-                    <div class="alert"
-                        ng-class="search.hideFeatured
-                         ? 'alert-primary'
-                         : 'alert-danger'">
+                    <div ng-class="search.hideFeatured
+                         ? 'text-primary'
+                         : 'text-danger'"
+                         ng-click="search.toggleFeatured()">
                         <span class="glyphicon"
                             ng-class="search.hideFeatured
                              ? 'glyphicon-plus'
-                             : 'glyphicon-minus'"
-                             ng-click="search.toggleFeatured()">
+                             : 'glyphicon-minus'">
                          </span>
                          {{search.hideFeatured
                           ? 'Show Featured'
@@ -86,14 +85,16 @@
                     </div>
                     <div class="btn-group">
                         <button class="btn btn-danger"
-                            ng-click="search.getPage(false)">
+                            ng-click="search.getPage(false)"
+                            ng-disabled="!search.prevAllowed">
                             Prev Page
                         </button>
                         <button class="btn" ng-disabled="true">
                             {{search.page}}
                         </button>
                         <button class="btn btn-success"
-                            ng-click="search.getPage(true)">
+                            ng-click="search.getPage(true)"
+                            ng-disabled="!search.nextAllowed">
                             Next Page
                         </button>
                     </div>
