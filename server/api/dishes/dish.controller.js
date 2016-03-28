@@ -7,12 +7,10 @@ function DishCtrl() {
 }
 function parseBody(response) {
     if (response.statusCode !== 200) {
-        var err = {
-            status: response.statusCode
-        };
-        err.message = (err.status === 401)
+        var err = new Error((response.statusCode === 401)
          ? "Please add a proper API_KEY to the server config!"
-         : "Ratelimit reached. Please try again";
+         : "Ratelimit reached. Please try again");
+        err.status = response.statusCode;
         throw err;
     } else {
         return JSON.parse(response.body);
@@ -24,20 +22,27 @@ DishCtrl.prototype.search = function dishSearch(query) {
     return self.request('search', query)
         .then(parseBody)
         .then(function(body) {
-            self.body = {
-                count: body.stats.count,
-                list: body.dishes.map(_dishMapper)
-            };
-            return Bluebird.join(
-                getExtremes.call(self, query, 'date'),
-                getExtremes.call(self, query, 'date', true),
-                getExtremes.call(self, query, 'popularity'),
-                function(oldest, newest, popular) {
-                    self.body.oldest = _dishMapper(oldest.dishes[0]);
-                    self.body.newest = _dishMapper(newest.dishes[0]);
-                    self.body.mostPopular = _dishMapper(popular.dishes[0]);
-                    return self.body;
-                });
+            if (!_.isUndefined(query.page)) {
+                self.body = {
+                    list: body.dishes.map(_dishMapper)
+                };
+                return self.body;
+            } else {
+                self.body = {
+                    count: body.stats.count,
+                    list: body.dishes.map(_dishMapper)
+                };
+                return Bluebird.join(
+                    getExtremes.call(self, query, 'date'),
+                    getExtremes.call(self, query, 'date', true),
+                    getExtremes.call(self, query, 'popularity'),
+                    function(oldest, newest, popular) {
+                        self.body.oldest = _dishMapper(oldest.dishes[0]);
+                        self.body.newest = _dishMapper(newest.dishes[0]);
+                        self.body.mostPopular = _dishMapper(popular.dishes[0]);
+                        return self.body;
+                    });
+            }
         });
 };
 

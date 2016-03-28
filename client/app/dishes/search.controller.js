@@ -4,13 +4,32 @@
 
     function searchCtrl(dishesService) {
         var vm = this;
+        vm.page = 1;
+
+        function _errorHandler(err) {
+            vm.loadingDishes = false;
+            vm.loadingMenus = false;
+            vm.error = true;
+            vm.errMsg = err.data.split("<")[0];
+        }
+
+        vm.dismissError = function dismissError() {
+            vm.error = false;
+        };
+
+        vm.toggleFeatured = function toggleFeatured() {
+            vm.hideFeatured = !vm.hideFeatured;
+        };
+
         vm.submit = function submit() {
             if (!vm.findDish.$valid) {
                 console.log('not valid');
                 return;
             }
+            vm.error = false;
             vm.loadingDishes = true;
-            dishesService.search(vm.dish)
+            vm.searchStr = vm.dish;
+            dishesService.search(vm.searchStr)
                 .then(function(data) {
                     console.log('done');
                     vm.count = data.count;
@@ -20,7 +39,22 @@
                     vm.dishes = data.list;
                     vm.loadingDishes = false;
 
-                });
+            }).catch(_errorHandler);
+        };
+
+        vm.getPage = function getPage(next) {
+            var params = {
+                query: vm.searchStr
+            };
+            params.page = next
+             ? ++vm.page
+             : --vm.page;
+             vm.loadingDishes = true;
+            dishesService.search(params)
+                .then(function(data) {
+                    vm.dishes = data.list;
+                    vm.loadingDishes = false;
+            }).catch(_errorHandler);
         };
 
         vm.getMenu = function getMenuByDishId(id) {
@@ -30,7 +64,7 @@
                 .then(function(data) {
                     vm.menus = data.menus;
                     vm.loadingMenus = false;
-                });
+            }).catch(_errorHandler);
         }
 
         vm.reset = function resetPage() {
