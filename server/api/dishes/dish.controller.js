@@ -6,10 +6,14 @@ function DishCtrl() {
     this.request = requestBuilder('dishes');
 }
 function parseBody(response) {
-    if (response.statusCode === 401) {
-        throw new Error("Please add a proper API_KEY to the server config!");
-    } else if (response.statusCode === 403) {
-        throw new Error("Ratelimit reached. Please try again");
+    if (response.statusCode !== 200) {
+        var err = {
+            status: response.statusCode
+        };
+        err.message = (err.status === 401)
+         ? "Please add a proper API_KEY to the server config!"
+         : "Ratelimit reached. Please try again";
+        throw err;
     } else {
         return JSON.parse(response.body);
     }
@@ -30,10 +34,8 @@ DishCtrl.prototype.search = function dishSearch(query) {
                 getExtremes.call(self, query, 'popularity'),
                 function(oldest, newest, popular) {
                     self.body.oldest = _dishMapper(oldest.dishes[0]);
-                    console.log(newest.dishes[0]);
                     self.body.newest = _dishMapper(newest.dishes[0]);
                     self.body.mostPopular = _dishMapper(popular.dishes[0]);
-                    console.log("done");
                     return self.body;
                 });
         });

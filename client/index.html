@@ -18,12 +18,20 @@
                             <label for="searchbox">Search dishes</label>
                             <input class="form-control"
                                 id="searchbox"
+                                name="dish"
                                 ng-model="search.dish"
-                                ng-required
+                                ng-required="true"
                                 type="text" />
                             <button class="btn btn-primary"
+                                ng-disabled="search.loadingDishes || search.loadingMenus"
                                 type="submit">
                                 Search!
+                            </button>
+                            <button class="btn btn-danger"
+                                ng-click="search.reset($event)"
+                                ng-disabled="search.loadingDishes || search.loadingMenus"
+                                type="button">
+                                Reset Page
                             </button>
                         </div>
                     </form>
@@ -31,7 +39,10 @@
             </div>
         </div>
         <hr />
-        <div class="container" ng-if="search.dishes">
+        <div class="alert alert-success" ng-show="search.loadingDishes">
+            Loading Dishes...
+        </div>
+        <div class="container" ng-if="!search.loadingDishes && search.dishes">
             <div class="row">
                 <div class="col-md-6">
                     <h1>Results for "{{search.dish}}"
@@ -54,6 +65,13 @@
                         dish="dish"
                         get-menu="search.getMenu(id)"></dish>
                 </div>
+                <div class="col-md-6" ng-show="search.loadingMenus">
+                    <div class="alert alert-success">
+                        Loading Menus...
+                    </div>
+                </div>
+                <menu-listing menus="!search.loadingMenus && search.menus"
+                    ng-if="search.menus"></menu-listing>
             </div>
         </div>
 
@@ -69,6 +87,7 @@
         <script src="/src/app.js"></script>
         <script src="/src/dishes/dishes.service.js"></script>
         <script src="/src/dishes/dish.directive.js"></script>
+        <script src="/src/dishes/menu_listing.directive.js"></script>
         <script src="/src/dishes/search.controller.js"></script>
         <!-- endinject -->
     </body>

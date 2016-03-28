@@ -9,6 +9,7 @@
                 console.log('not valid');
                 return;
             }
+            vm.loadingDishes = true;
             dishesService.search(vm.dish)
                 .then(function(data) {
                     console.log('done');
@@ -17,17 +18,36 @@
                     vm.oldest = data.oldest;
                     vm.newest = data.newest;
                     vm.dishes = data.list;
+                    vm.loadingDishes = false;
+
                 });
         };
 
         vm.getMenu = function getMenuByDishId(id) {
             console.log('called');
+            vm.loadingMenus = true;
             dishesService.menus(id)
                 .then(function(data) {
-                    console.log('menus fetched');
-                    vm.menus = data;
-                    console.log(vm.menus);
+                    vm.menus = data.menus;
+                    vm.loadingMenus = false;
                 });
         }
+
+        vm.reset = function resetPage() {
+            if (vm.loadingMenus || vm.loadingDishes) {
+                event.preventDefault();
+                return false;
+            }
+            event.preventDefault();
+            vm.count = 0;
+            vm.dishes = false;
+            vm.menus = false;
+            vm.mostPopular = false;
+            vm.newest = false;
+            vm.oldest = false;
+            vm.dish = '';
+            vm.findDish.$setPristine();
+            return false;
+        };
     }
 })();

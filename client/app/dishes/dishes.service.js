@@ -1,19 +1,21 @@
 (function() {
     var app = angular.module('nyplDishSearch');
-    var apiUrl = '/api/dishes/:path';
+    var apiUrl = './api/dishes/';
     app.factory('dishesService', ["$resource", dishesService]);
     function dishesService($resource) {
-        var resource = $resource(apiUrl);
+        var searchResource = $resource(apiUrl + 'search');
+        var byIdResource = $resource(apiUrl + ':id/:path');
         this.search = function(dish) {
-            return resource.get({
-                path: 'search',
+            console.log('running search with', dish);
+            return searchResource.get({
                 query: dish
             }).$promise;
         };
 
         this.menus = function(dishId) {
-            return resource.get({
-                path: dishId + '/menus'
+            return byIdResource.get({
+                id: dishId,
+                path: 'menus'
             }).$promise;
         };
         return this;
