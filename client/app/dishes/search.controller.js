@@ -10,7 +10,7 @@
             vm.loadingDishes = false;
             vm.loadingMenus = false;
             vm.error = true;
-            vm.errMsg = err.data.split("<")[0];
+            vm.errMsg = err.data;
         }
 
         vm.dismissError = function dismissError() {
